@@ -1,5 +1,11 @@
 #!/usr/bin/env sh
 
+CONFIG=~/.docker/config.json
+
+[ -e "${CONFIG}" ] && cat "${CONFIG}"
+
+mkdir -p "$(dirname "${CONFIG}")" && echo '{"experimental":"enabled"}' > "${CONFIG}"
+
 docker buildx inspect --bootstrap
 
 docker build \
