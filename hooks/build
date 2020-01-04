@@ -1,6 +1,14 @@
 #!/usr/bin/env sh
 
-CONFIG=~/.docker/config.json
+DOCKER_DIR=~/.docker
+CONFIG=${DOCKER_DIR}/config.json
+BINARY_TARGET="${DOCKER_DIR}/cli-plugins/docker-buildx"
+
+mkdir -p "$(dirname "${BINARY_TARGET}")"
+curl --output "${BINARY_TARGET}" https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64
+chmod +x "${BINARY_TARGET}"
+
+docker buildx inspect --bootstrap || true
 
 [ -e "${CONFIG}" ] && cat "${CONFIG}"
 
@@ -8,12 +16,7 @@ mkdir -p "$(dirname "${CONFIG}")" && echo '{"experimental":"enabled"}' > "${CONF
 
 [ -e "${CONFIG}" ] && cat "${CONFIG}"
 
-uname -a
-
-curl --output buildx https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64
-chmod +x buildx
-
-./buildx inspect --bootstrap
+docker buildx inspect --bootstrap || true
 
 exit 1
 
