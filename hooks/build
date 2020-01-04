@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+docker buildx inspect --bootstrap
+
 docker build \
     --label org.label-schema.build-date=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
     --label org.label-schema.vcs-ref=`git rev-parse --short HEAD` \
